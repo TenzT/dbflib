@@ -27,6 +27,10 @@ struct DBaseFile
         /**<deferred record loading>*/
         bool readRecordDeferred();
 
+        inline unsigned long long getFileSize() const {
+            return m_fileSize;
+        }
+
     private:
         /**< Read file header safely into std::string */
         void readHeader(std::ifstream& iFile);
