@@ -52,14 +52,30 @@ bool DBaseFile::openFile(const std::string fileName, bool deferRecordLoading) {
     validateBlockSize(m_colDefBlockSize, m_colDefLength);
     if(!(m_headerData.empty())) { m_header.parse(m_headerData);}
     validateBlockSize(m_colDefBlockSize, m_colDefLength);
+    m_headerLoaded = true;
 
     //Read rest of file
     readColDef(iFile, m_header);
 
     if (!deferRecordLoading) {
         readRecords(iFile, m_header);
+        m_recordLoaded = true;
     }
 
+    iFile.close();
+
+    return true;
+}
+
+
+bool DBaseFile::readRecordDeferred() {
+    if (m_recordLoaded) {
+        return true;
+    }
+    std::ifstream iFile;
+    if(!iFile && iFile.is_open()) { throw fileNotFoundEx("File is already open in another process."); }
+    iFile.open(m_fileName, std::ifstream::ate | std::ifstream::binary);
+    readRecords(iFile, m_header);
     iFile.close();
 
     return true;

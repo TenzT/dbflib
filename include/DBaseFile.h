@@ -24,6 +24,9 @@ struct DBaseFile
         /**< Data records in the file */
         std::vector<DBaseRecord> m_records;
 
+        /**<deferred record loading>*/
+        bool readRecordDeferred();
+
     private:
         /**< Read file header safely into std::string */
         void readHeader(std::ifstream& iFile);
@@ -54,6 +57,11 @@ struct DBaseFile
         unsigned int m_dbcSize = 0;
         /**<fileName> */
         std::string m_fileName;
+        /**<header + column definition>*/
+        bool m_headerLoaded = false;
+        /**<recorded lodeded>*/
+        bool m_recordLoaded = false;
+        
 };
 
 /**< \section   Exceptions */
