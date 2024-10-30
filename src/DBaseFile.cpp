@@ -24,12 +24,13 @@ constexpr unsigned int DBC_SIZE = 263;
  *  \param Name of the dBase file
  *  \return True if succeded. Otherwise throws exception
  */
-bool DBaseFile::openFile(const std::string fileName) {
+bool DBaseFile::openFile(const std::string fileName, bool deferRecordLoading) {
 
     //open file and get file size
+    m_fileName = fileName;
     std::ifstream iFile;
     if(!iFile && iFile.is_open()) { throw fileNotFoundEx("File is already open in another process."); }
-    iFile.open(fileName, std::ifstream::ate | std::ifstream::binary);
+    iFile.open(m_fileName, std::ifstream::ate | std::ifstream::binary);
     m_fileSize = (unsigned long long)iFile.tellg();
     iFile.seekg(0, iFile.beg);
 
@@ -54,7 +55,10 @@ bool DBaseFile::openFile(const std::string fileName) {
 
     //Read rest of file
     readColDef(iFile, m_header);
-    readRecords(iFile, m_header);
+
+    if (!deferRecordLoading) {
+        readRecords(iFile, m_header);
+    }
 
     iFile.close();
 

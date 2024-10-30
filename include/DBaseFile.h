@@ -12,7 +12,7 @@
 struct DBaseFile
 {
         /**< Open file and get contents */
-        bool openFile(const std::string fileName);
+        bool openFile(const std::string fileName, bool deferRecordLoading=false);
         /**< Open file and get contents */
         void stat();
 
@@ -52,6 +52,8 @@ struct DBaseFile
         std::string m_headerData = "";
         /**<special block for visual Foxpro only> */
         unsigned int m_dbcSize = 0;
+        /**<fileName> */
+        std::string m_fileName;
 };
 
 /**< \section   Exceptions */
