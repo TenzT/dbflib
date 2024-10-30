@@ -15,6 +15,9 @@ struct DBaseRecord
     DBaseRecord(std::string& recordStr, std::vector<DBaseColDef>& iFileColDef);
     ~DBaseRecord();
     void stat();
+    std::vector<std::shared_ptr<std::string>>& getRecordData() {
+        return m_recordData;
+    }
 
     private:
         std::vector<std::shared_ptr<std::string>> m_recordData;
