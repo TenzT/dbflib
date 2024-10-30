@@ -50,6 +50,8 @@ struct DBaseFile
         unsigned int m_totalHeaderLength = 0;
         /**< Header contents (read raw from disk)*/
         std::string m_headerData = "";
+        /**<special block for visual Foxpro only> */
+        unsigned int m_dbcSize = 0;
 };
 
 /**< \section   Exceptions */
