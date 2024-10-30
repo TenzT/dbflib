@@ -18,6 +18,8 @@
 
 using namespace std;
 
+constexpr unsigned int DBC_SIZE = 263;
+
 /** \brief Constructs dBase structure from given file.
  *  \param Name of the dBase file
  *  \return True if succeded. Otherwise throws exception
@@ -39,8 +41,13 @@ bool DBaseFile::openFile(const std::string fileName) {
     //Read file contents into heap memory
     readHeader(iFile);
 
+    // compatable with viso
+    if (m_header.m_fileType.find("Visual FoxPro") != std::string::npos) {
+        m_dbcSize = DBC_SIZE;
+    }
+
     //Check header
-    m_colDefLength = m_header.m_numBytesInHeader - m_totalHeaderLength -1;
+    m_colDefLength = m_header.m_numBytesInHeader - m_fileHeaderLength - m_dbcSize -1;
     validateBlockSize(m_colDefBlockSize, m_colDefLength);
     if(!(m_headerData.empty())) { m_header.parse(m_headerData);}
     validateBlockSize(m_colDefBlockSize, m_colDefLength);
@@ -65,7 +72,7 @@ void DBaseFile::readHeader(std::ifstream& iFile) {
 ///Read column definition
 void DBaseFile::readColDef(std::ifstream& iFile, DBaseHeader& iFileHeader) {
     //omit terminating byte at header end
-    unsigned int headerLengthWOTerminatingChar = iFileHeader.m_numBytesInHeader - 1;
+    unsigned int headerLengthWOTerminatingChar = iFileHeader.m_numBytesInHeader - 1 - (m_dbcSize + 1);
     iFile.seekg((m_fileHeaderLength), iFile.beg);
     std::string colDefBuf((headerLengthWOTerminatingChar - m_fileHeaderLength), ' ');
     iFile.read(&(colDefBuf.at(0)), (headerLengthWOTerminatingChar - m_fileHeaderLength));
