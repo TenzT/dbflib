@@ -69,6 +69,9 @@ bool DBaseFile::openFile(const std::string fileName, bool deferRecordLoading) {
 
 
 bool DBaseFile::readRecordDeferred() {
+    if (!m_headerLoaded) {
+        return openFile(m_fileName);
+    }
     if (m_recordLoaded) {
         return true;
     }
