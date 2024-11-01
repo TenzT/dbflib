@@ -144,21 +144,27 @@ inline void DBaseFile::validateBlockSize(unsigned int& blockSize, unsigned int& 
 }
 
 ///Nice formatting for console output
-void DBaseFile::stat() {
+void DBaseFile::stat(bool fileInformation, bool columnInformation, bool recordInformation) {
     std::cout << std::endl;
+    if (fileInformation) {
     std::cout << "========== FILE INFORMATION ==========" << std::endl;
     std::cout << std::endl;
-    m_header.stat();
-    std::cout << std::endl;
-    std::cout << "========= COLUMN INFORMATION =========" << std::endl;
-    std::cout << std::endl;
-    for(DBaseColDef d : m_colDef) {
-            d.stat();
+        m_header.stat();
+        std::cout << std::endl;
     }
-    std::cout << std::endl;
-    std::cout << "========= RECORD INFORMATION =========" << std::endl;
-    for(DBaseRecord& r : m_records) {
-            r.stat();
+    if (columnInformation) {
+        std::cout << "========= COLUMN INFORMATION =========" << std::endl;
+        std::cout << std::endl;
+        for(DBaseColDef d : m_colDef) {
+                d.stat();
+        }
+        std::cout << std::endl;
     }
-    std::cout << std::endl;
+    if (recordInformation) {
+        std::cout << "========= RECORD INFORMATION =========" << std::endl;
+        for(DBaseRecord& r : m_records) {
+                r.stat();
+        }
+        std::cout << std::endl;
+    }
 }
