@@ -14,7 +14,7 @@ struct DBaseFile
         /**< Open file and get contents */
         bool openFile(const std::string fileName, bool deferRecordLoading=false);
         /**< Open file and get contents */
-        void stat();
+        void stat(bool fileInformation=true, bool columnInformation=true, bool recordInformation=true);
 
         /**< \section Member variables */
         /**< Header structure */
@@ -26,6 +26,10 @@ struct DBaseFile
 
         /**<deferred record loading>*/
         bool readRecordDeferred();
+
+        inline unsigned long long getFileSize() const {
+            return m_fileSize;
+        }
 
     private:
         /**< Read file header safely into std::string */
