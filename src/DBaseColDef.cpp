@@ -37,9 +37,9 @@ DBaseColDef::DBaseColDef(std::string& oneColumn) {
     }
 
     // Length of field in bytes
-    m_fieldLength = (int)oneColumn.at(16);
+    m_fieldLength = (uint8_t)oneColumn.at(16);
     if (m_fieldType == DBaseFieldType::Character && m_fieldLength > 254) {
-        std::cout << "field length exceeds limit of character type(254), truncate to 254" << std::endl;
+        std::cout << m_fieldName << " field length (" << m_fieldLength << ") exceeds limit of character type(254), truncate to 254" << std::endl;
         m_fieldLength = 254;
     } 
 
