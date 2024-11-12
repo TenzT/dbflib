@@ -12,11 +12,7 @@ void DBaseHeader::parse(std::string& headerData) {
     //TODO: read file into m_headerData
     for(unsigned int i = 0; i < headerData.size(); i++) {
         currentByte = headerData.at(i);
-
-        //Read file header bit by bit. Spec of DBF files available at:
-        //http://www.dbf2002.com/dbf-file-format.html
-        if(currentByte == 0x0D) {break;}
-
+        
         if(i < m_blockSize) {
             switch(i) {
                 case 0:{
